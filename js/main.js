@@ -85,7 +85,7 @@ var App = {
 				
 				
             etsyURL = "https://openapi.etsy.com/v2/listings/active.js?callback=getData&keywords="+
-                terms.value+"&includes=Images:1&api_key="+api_key;
+                terms.value+"&limit=24&includes=Images:1&api_key="+api_key;
 		
 			
 			App.jsonp(etsyURL); // Call the JSONP constructor
