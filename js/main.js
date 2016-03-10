@@ -67,7 +67,6 @@ var App = {
 					document.getElementsByTagName('div')[0].innerHTML = "No results"; // Message for no results
 				 }else{
 					
-					
 				
 				  for (x=0;x<data.results.length;x++){
 					
