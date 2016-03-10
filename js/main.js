@@ -3,9 +3,10 @@ var App = {
     
 	page: 1,
 	etsyOffset: 0,
-			   
+    api_key:"zs0b34pkyg8a94huf0mrlsm2",
+	   
 	jsonp: function(url) {  
-      script = document.createElement("script"); // Creates the JSONP script tag
+      var script = document.createElement("script"); // Creates the JSONP script tag
       script.type = "text/javascript";
       script.src = url; // Sets the url to the Etsy API 
       document.getElementsByTagName('head')[0].appendChild(script); // Imbeds script tag into HTML
@@ -75,7 +76,7 @@ var App = {
 	
 	    App.etsyOffset = App.page * 24;
 		App.page = App.page + 1;
-	    var etsyURL = App.buildEtsyUrl(terms.value, App.etsyOffset, api_key);	
+	    var etsyURL = App.buildEtsyUrl(terms.value, App.etsyOffset, App.api_key);	
 	    App.jsonp(etsyURL);
 		
 		return; 	
@@ -84,7 +85,7 @@ var App = {
 	
     callAPI:function(){
 		
-		   api_key = "zs0b34pkyg8a94huf0mrlsm2";
+		   
            terms = document.getElementById('etsyTerms'); // The user input
 				
 		   getData = function(data){
@@ -130,7 +131,7 @@ var App = {
 		    };
 				
 				
-            var etsyURL = App.buildEtsyUrl(terms.value, App.etsyOffset, api_key);
+            var etsyURL = App.buildEtsyUrl(terms.value, App.etsyOffset, App.api_key);
                 
 		
 			App.jsonp(etsyURL); // Call the JSONP constructor
