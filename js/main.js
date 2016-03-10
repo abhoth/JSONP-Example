@@ -9,6 +9,7 @@ var App = {
       script.type = "text/javascript";
       script.src = url; // Sets the url to the Etsy API 
       document.getElementsByTagName('head')[0].appendChild(script); // Imbeds script tag into HTML
+	  return;
 	},
 	createNextButton: function(url){ // An anchor creation helper function
 		var btn = document.createElement('input'); // Creates an anchor
@@ -62,15 +63,22 @@ var App = {
 		
 	},
 	
+	buildEtsyUrl: function(terms, offset,apikey){
+		
+		var etsyURL = "https://openapi.etsy.com/v2/listings/active.js?callback=getData&keywords="+
+                terms+"&limit=24&offset="+ offset.toString() + "&includes=Images:1&api_key="+apikey;
+		
+		return etsyURL;
+	},
+	
 	paginate: function(){
 	
 	    App.etsyOffset = App.page * 24;
 		App.page = App.page + 1;
-	    var etsyURL = "https://openapi.etsy.com/v2/listings/active.js?callback=getData&keywords="+
-                terms.value+"&limit=24&offset="+ App.etsyOffset.toString() + "&includes=Images:1&api_key="+api_key;
+	    var etsyURL = App.buildEtsyUrl(terms.value, App.etsyOffset, api_key);	
+	    App.jsonp(etsyURL);
 		
-			
-	    App.jsonp(etsyURL); 	
+		return; 	
 		
 	},
 	
@@ -122,10 +130,9 @@ var App = {
 		    };
 				
 				
-            var etsyURL = "https://openapi.etsy.com/v2/listings/active.js?callback=getData&keywords="+
-                terms.value+"&limit=24&includes=Images:1&api_key="+api_key;
+            var etsyURL = App.buildEtsyUrl(terms.value, App.etsyOffset, api_key);
+                
 		
-			
 			App.jsonp(etsyURL); // Call the JSONP constructor
 
 
