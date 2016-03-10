@@ -108,7 +108,13 @@ var App = {
 			App.callAPI(); // Calls the API
 			
 			});
-		
+		document.getElementById('etsyTerms').addEventListener('keypress', function (e) {
+    		var key = e.which || e.keyCode;
+    		if (key === 13) { 
+			    document.getElementsByTagName('div')[0].innerHTML = "";
+  			    App.callAPI(); 
+			}
+		});
 	}
 
 	
