@@ -1,13 +1,23 @@
 
 var App = {
     
+	page: 1,
+	etsyOffset: 0,
+			   
 	jsonp: function(url) {  
       script = document.createElement("script"); // Creates the JSONP script tag
       script.type = "text/javascript";
       script.src = url; // Sets the url to the Etsy API 
       document.getElementsByTagName('head')[0].appendChild(script); // Imbeds script tag into HTML
 	},
-	
+	createNextButton: function(url){ // An anchor creation helper function
+		var btn = document.createElement('input'); // Creates an anchor
+		btn.setAttribute('type','button'); 
+		btn.setAttribute('value','Show more results');
+		btn.setAttribute('id','btnNext');
+		return btn;
+		
+	},
 	createContainer: function(){ // An container creation helper function
 		var container = document.createElement('div'); // Creates a containing div
 		container.classList.add('col-md-1'); // Add Bootstrap classes
@@ -52,27 +62,55 @@ var App = {
 		
 	},
 	
+	paginate: function(){
+	
+	    App.etsyOffset = App.page * 24;
+		App.page = App.page + 1;
+	    var etsyURL = "https://openapi.etsy.com/v2/listings/active.js?callback=getData&keywords="+
+                terms.value+"&limit=24&offset="+ App.etsyOffset.toString() + "&includes=Images:1&api_key="+api_key;
+		
+			
+	    App.jsonp(etsyURL); 	
+		
+	},
+	
     callAPI:function(){
 		
-		    api_key = "zs0b34pkyg8a94huf0mrlsm2";
-            terms = document.getElementById('etsyTerms'); // The user input
+		   api_key = "zs0b34pkyg8a94huf0mrlsm2";
+           terms = document.getElementById('etsyTerms'); // The user input
 				
-			getData = function(data){
+		   getData = function(data){
 				
 			   var x;      
 			   
 			   if (data.ok) {
-                
+                console.log(data);
 				 if (data.results.length == 0){
-					document.getElementsByTagName('div')[0].innerHTML = "No results"; // Message for no results
+					document.getElementById('results').innerHTML = "No results"; // Message for no results
 				 }else{
-					
+					document.getElementById('results').innerHTML = data.count +  " results";
 				
 				  for (x=0;x<data.results.length;x++){
 					
 					document.getElementsByTagName('div')[0].appendChild(App.createListing(data.results[x].Images[0].url_75x75,data.results[x].title, data.results[x].url));
 					
 				  }
+				  
+				  if  (data.count > 24){
+					  
+					  if(!document.getElementById('btnNext')){
+						  
+						    document.getElementById('paginationBtn').appendChild(App.createNextButton());
+					        document.getElementById('btnNext').addEventListener('click', function(){
+						  
+					        App.paginate();
+
+						  
+						  });
+					  }
+					
+				  }
+				  
 				 }
 				  
         	   } else {
@@ -84,7 +122,7 @@ var App = {
 		    };
 				
 				
-            etsyURL = "https://openapi.etsy.com/v2/listings/active.js?callback=getData&keywords="+
+            var etsyURL = "https://openapi.etsy.com/v2/listings/active.js?callback=getData&keywords="+
                 terms.value+"&limit=24&includes=Images:1&api_key="+api_key;
 		
 			
@@ -99,7 +137,7 @@ var App = {
 	init: function(){
 		
 		
-		btn = document.getElementById('etsySearch'); 
+		var btn = document.getElementById('etsySearch'); 
 		
 		btn.addEventListener('click', function() { // Click event
 			
