@@ -13,6 +13,7 @@ var App = {
 		container.classList.add('col-md-1'); // Add Bootstrap classes
 		container.classList.add('col-sm-2');
 		container.classList.add('col-xs-4');
+		container.classList.add('listing');
 		return container;
 	},
 	
